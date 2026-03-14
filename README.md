@@ -81,7 +81,7 @@ pip install -r requirements.txt
 
 ### 3. Download Dataset
 
-Dataset is hosted on Zenodo (DOI: 10.5281/zenodo.YYYYYYY):
+Dataset is hosted on Zenodo (DOI: 10.5281/zenodo.19021498):
 - `treino_balanceado_FINAL.csv` (9,303 samples, ~5 MB)
 
 Download and place in project root directory.
