@@ -1,0 +1,87 @@
+{
+  "split_method": "hexagon_stratified_by_Class8590",
+  "seed": 42,
+  "fractions": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "source_file": "treino_balanceado_FINAL.csv",
+  "shapefile": "hex_Cerrado_class_Change.shp",
+  "projection": "South_America_Albers_Equal_Area_Conic (SAD69)",
+  "assignment": "nearest hexagon centroid (Albers Euclidean distance)",
+  "total_samples": 9303,
+  "censored_excluded": 7611,
+  "spatial_overlap_train_test_hexagons": 0,
+  "splits": {
+    "train": {
+      "n_pixels": 6152,
+      "n_hexagons": 921,
+      "n_label1": 2883,
+      "n_label0": 3269,
+      "pct_label1": 46.9,
+      "pattern_dist": {
+        "CDPD": 2736,
+        "NC": 1318,
+        "CDAD": 1104,
+        "CDPC": 580,
+        "CCPC": 269,
+        "CDAC": 63,
+        "CD": 37,
+        "CCPD": 26,
+        "CCAC": 19
+      }
+    },
+    "val": {
+      "n_pixels": 1646,
+      "n_hexagons": 197,
+      "n_label1": 827,
+      "n_label0": 819,
+      "pct_label1": 50.2,
+      "pattern_dist": {
+        "CDPD": 834,
+        "NC": 390,
+        "CDPC": 157,
+        "CDAD": 125,
+        "CCPC": 65,
+        "CDAC": 55,
+        "CCPD": 15,
+        "CD": 3,
+        "CCAC": 2
+      }
+    },
+    "test": {
+      "n_pixels": 1505,
+      "n_hexagons": 198,
+      "n_label1": 788,
+      "n_label0": 717,
+      "pct_label1": 52.4,
+      "pattern_dist": {
+        "CDPD": 732,
+        "NC": 327,
+        "CDAD": 139,
+        "CDPC": 132,
+        "CCPC": 77,
+        "CD": 70,
+        "CCPD": 16,
+        "CDAC": 11,
+        "CCAC": 1
+      }
+    }
+  },
+  "notes": {
+    "assignment_method": "Each pixel assigned to nearest hexagon centroid using Albers XY distance. Median distance to nearest centroid: 5.7km, p95: 26.6km.",
+    "stratification": "Hexagons split within each Class8590 pattern group (9 patterns). Ensures proportional pattern representation across all three splits.",
+    "guarantee": "Zero hexagon overlap between any two splits. Pixels from the same hexagon always go to the same split.",
+    "raster_params": {
+      "bounds_wgs84": {
+        "left": -60.47269846482955,
+        "right": -41.277407642235204,
+        "top": -2.3319366460458646,
+        "bottom": -24.681931083411143
+      },
+      "size": "82933 rows x 71227 cols",
+      "resolution": "30m"
+    }
+  }
+}
