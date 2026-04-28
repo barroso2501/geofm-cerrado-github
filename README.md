@@ -35,6 +35,25 @@ All classification models evaluated under hexagon-stratified spatial split (0% g
 
 > **Weibull note:** The F1=0.774 reflects threshold=0.5 applied to survival probabilities. The model was trained with Weibull log-likelihood (not F1), making direct F1 comparison misleading. AUC=0.846 is the appropriate metric.
 
+
+## Prospective Validation
+
+The Weibull survival model (etapa8) was prospectively validated against MapBiomas 2019–2024 data — a period entirely independent of the training data.
+
+**Design:** 3,913 pasture pixels identified by the model as candidates for soybean conversion (not yet converted at training time) were checked against MapBiomas annual rasters 2019–2024.
+
+| Risk Category | N pixels | Converted (2019-2024) | Precision |
+|:-------------:|:--------:|:--------------------:|:---------:|
+| CRITICAL | 99 | 99 | **100%** |
+| HIGH | 573 | 573 | **100%** |
+| MODERATE | 567 | 567 | **100%** |
+| LOW | 2,674 | 2,652 | 99.2% |
+| **TOTAL** | **3,913** | **3,891** | **99.4%** |
+
+Every pixel flagged as CRITICAL, HIGH, or MODERATE was mapped as soybean (class 39) by MapBiomas in 2019–2024. The model was not retrained or adjusted after observing these outcomes.
+
+> **Important caveat:** Target pixels are a pre-selected high-risk sample (pasture pixels without observed conversion in the training period). The 99.4% conversion rate should not be interpreted as a population-level conversion rate for all Cerrado pasture. Field validation is required before operational deployment at landscape scale.
+
 ---
 
 ## Repository Structure
@@ -304,7 +323,3 @@ with torch.no_grad():
 
 MIT License — see [LICENSE](LICENSE) for details.  
 MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
-
-
-
-Data derived from MapBiomas Collection 10 is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
