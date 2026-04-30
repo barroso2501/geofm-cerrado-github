@@ -1,0 +1,19 @@
+{
+  "version": "dataset_PN",
+  "transition": "P_to_N",
+  "transition_label": "Pasture to Native Vegetation (Regeneration)",
+  "created": "2026-04-28 11:43",
+  "threshold_anos": 10,
+  "T_max": 2014,
+  "label_1": "Pixel reaches native class (3,4,11,12) in <=10 years after T",
+  "label_0": "Pixel does not reach native class in 10 years",
+  "no_transition_classes": "Unlike P_to_S, no transition classes accepted (21/41 not intermediate for regeneration)",
+  "T_definition": "Same as P_to_S: first year with class 15 after native vegetation",
+  "source": "MapBiomas Collection 10, recalculated from scratch",
+  "split_method": "Hexagon-stratified (same split as dataset v2)",
+  "ecological_basis": "Threshold of 10 years reflects MapBiomas detection capacity for native vegetation regeneration. Incipient regeneration detectable in 5-10 years; physiognomic establishment requires 10-20 years.",
+  "future_use": "Training parallel Weibull survival model for P_to_N. Then: competing risks model (joint P_to_S and P_to_N).",
+  "total_valid": 7642,
+  "n_label1": 1157,
+  "n_label0": 6485
+}

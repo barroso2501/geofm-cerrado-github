@@ -1,0 +1,25 @@
+{
+  "inference_date": "20260427_095611",
+  "transition_type": "P_to_S",
+  "transition_label": "Pasture to Soybean",
+  "model_checkpoint": "weibull_survival_20260426_114434.pth",
+  "model_test_auc": 0.8461332483066903,
+  "n_pixels": 3913,
+  "horizons_years": [
+    2,
+    5,
+    10
+  ],
+  "risk_categories": {
+    "HIGH": "P_5yr >= 0.70",
+    "MEDIUM": "0.40 <= P_5yr < 0.70",
+    "LOW": "0.15 <= P_5yr < 0.40",
+    "VERY_LOW": "P_5yr < 0.15"
+  },
+  "important_caveat": "k and lambda are parameters learned to minimize Weibull log-likelihood, not direct measurements of ecological processes. Risk categories should be interpreted as model-based estimates requiring field validation before operational use.",
+  "future_transitions": [
+    "P_to_N (pasture to native vegetation \u2014 regeneration)",
+    "competing_risks (joint P_to_S and P_to_N model)"
+  ],
+  "source_pixels": "recalc_checkpoint.csv \u2014 status slow and censored"
+}
