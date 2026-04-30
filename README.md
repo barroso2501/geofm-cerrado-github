@@ -30,6 +30,8 @@ All classification models evaluated under hexagon-stratified spatial split (0% g
 | **Baseline MLP (etapa7b)** | **0.862** | **0.840** | **v2** | **5-year threshold** |
 | TwoChannel (etapa7) | 0.858 | 0.849 | v2 | Routing by pattern_T |
 | Weibull Survival (etapa8) | 0.774* | 0.846 | v2+ | *Not F1-optimized |
+| Weibull Regeneration (etapa9) | — | **0.910** | PN | P→N, AUC only |
+| **Competing Risks (etapa10)** | — | **P→S: 0.833 / P→N: 0.933** | v2+PN | r(P→S,P→N)=-0.911 |
 
 > **Key finding:** The improvement from v1 to v2 results (F1 0.59 → 0.86) is entirely attributable to the ecological label definition (5-year threshold), not to architectural changes. A simple MLP on dataset v2 matches the TwoChannel architecture, confirming that label quality is the dominant factor.
 
@@ -53,6 +55,28 @@ The Weibull survival model (etapa8) was prospectively validated against MapBioma
 Every pixel flagged as CRITICAL, HIGH, or MODERATE was mapped as soybean (class 39) by MapBiomas in 2019–2024. The model was not retrained or adjusted after observing these outcomes.
 
 > **Important caveat:** Target pixels are a pre-selected high-risk sample (pasture pixels without observed conversion in the training period). The 99.4% conversion rate should not be interpreted as a population-level conversion rate for all Cerrado pasture. Field validation is required before operational deployment at landscape scale.
+
+
+## Competing Risks Model
+
+The project culminates in a competing risks framework that jointly models two opposing pasture transitions:
+
+**P→S (conversion to soybean):** driven by agricultural expansion pressure, requires intensive root removal (destoca). AUC=0.833 in competing model.
+
+**P→N (regeneration to native vegetation):** enabled by Cerrado's underground woody structures (xylopodia) that persist after surface conversion. AUC=0.933 in competing model — improved from 0.910 (individual model).
+
+**Key finding — negative feedback confirmed:** The correlation between P(P→S) and P(P→N) per pixel is **r = -0.911**. This confirms the ecological hypothesis that conversion and regeneration are mechanistically opposed: pixels under active conversion pressure have suppressed regeneration probability, and pixels with intact underground structures have low conversion risk. The shared encoder learned this structure from data without it being explicitly programmed.
+
+```
+Shared Encoder (290→256→128)
+       ├── Head P→S → (k_S, lambda_S) → CIF_S(t)
+       └── Head P→N → (k_N, lambda_N) → CIF_N(t)
+
+k_S = 1.79  lambda_S = 15.8 yr  (moderate increasing hazard)
+k_N = 4.09  lambda_N = 34.6 yr  (strongly increasing, slow onset)
+```
+
+> **Caveat:** k and lambda are predictive parameters minimizing Weibull log-likelihood, not direct measurements of ecological processes.
 
 ---
 
@@ -262,6 +286,8 @@ with torch.no_grad():
 | etapa7 | `14` | TwoChannel | Hexagon-stratified | v2 | ✅ Frozen |
 | etapa7b | `15` | Baseline MLP (control) | Hexagon-stratified | v2 | ✅ Frozen |
 | etapa8 | `18` | Weibull Survival | Hexagon-stratified | v2+ | ✅ Frozen |
+| etapa9 | `23` | Weibull P→N (Regeneration) | Hexagon-stratified | PN | ✅ Frozen |
+| etapa10 | `24` | Competing Risks (P→S + P→N) | Hexagon-stratified | v2+PN | ✅ Frozen |
 
 ### OSF Pre-registration updates
 
@@ -273,7 +299,9 @@ with torch.no_grad():
 | Update 4 | Mar 16, 2026 | **Critical correction** — validation regime incompatibility |
 | Update 5 | Mar 18, 2026 | Experimental phase v2 closure |
 | Update 6 | Apr 24, 2026 | Dataset v2 + two-channel architectural direction |
-| Update 7 | Apr 2026 | Weibull survival model — etapa8 results |
+| Update 7 | Apr 26, 2026 | Weibull survival model — etapa8 results |
+| Update 8 | Apr 28, 2026 | Prospective validation 99.4% precision |
+| Update 9 | Apr 30, 2026 | Weibull P→N (etapa9) + Competing Risks (etapa10) |
 
 ---
 
