@@ -78,6 +78,23 @@ k_N = 4.09  lambda_N = 34.6 yr  (strongly increasing, slow onset)
 
 > **Caveat:** k and lambda are predictive parameters minimizing Weibull log-likelihood, not direct measurements of ecological processes.
 
+## Multi-State Survival Model (etapa13b — final)
+
+The final model incorporates a third state: **P→P (stable pasture)** — pixels that remained in pasture for 20+ years without any observed transition. These pixels are included as doubly-censored observations with their real observation time (up to 38 years) and explicit weighting (weight_PP=2.0).
+
+**Why weight_PP=2.0:** A pixel with 30 years of uninterrupted pasture is stronger evidence of low exit rate than a standard censored pixel with 5 years. The weighting encodes this difference explicitly.
+
+**Effect on parameters:**
+- lambda_S: 15.82 → 25.91 years (+10 years — more realistic)
+- lambda_N: 34.59 → 44.77 years (+10 years — more realistic)
+
+**Three-cluster structure (emerges from data):**
+- High P(P→S) / Low P(P→N): active conversion pressure
+- Low P(P→S) / High P(P→N): incomplete conversion, regeneration potential
+- Low P(P→S) / Low P(P→N): structural stability — new cluster absent in etapa10
+
+**Foundation model rationale:** weight_PP=2.0 was chosen over maximizing AUC because calibrated lambda values produce representations that generalize better to other biomes. The Weibull multi-state task is a pre-training pretext for the GeoFM, not the final product.
+
 ---
 
 ## Repository Structure
@@ -288,6 +305,8 @@ with torch.no_grad():
 | etapa8 | `18` | Weibull Survival | Hexagon-stratified | v2+ | ✅ Frozen |
 | etapa9 | `23` | Weibull P→N (Regeneration) | Hexagon-stratified | PN | ✅ Frozen |
 | etapa10 | `24` | Competing Risks (P→S + P→N) | Hexagon-stratified | v2+PN | ✅ Frozen |
+| etapa11 | `25` | Dataset P→P (stable pasture) | Hexagon-stratified | PP | ✅ Frozen |
+| etapa13b | `26` | Multi-State (P→S + P→N + P→P) | Hexagon-stratified | v2+PN+PP | ✅ Frozen |
 
 ### OSF Pre-registration updates
 
@@ -302,6 +321,7 @@ with torch.no_grad():
 | Update 7 | Apr 26, 2026 | Weibull survival model — etapa8 results |
 | Update 8 | Apr 28, 2026 | Prospective validation 99.4% precision |
 | Update 9 | Apr 30, 2026 | Weibull P→N (etapa9) + Competing Risks (etapa10) |
+| Update 10 | May 1, 2026 | Multi-State etapa13b (P→S + P→N + P→P, weight_PP=2.0) |
 
 ---
 
@@ -344,6 +364,13 @@ with torch.no_grad():
   note      = {OSF pre-registration: https://osf.io/c46je}
 }
 ```
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.  
+MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
 
 ---
 
