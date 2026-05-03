@@ -7,7 +7,8 @@
 **Institution:** TNC Brasil  
 **Author:** Mario Barroso Ramos Neto  
 **OSF Pre-registration:** https://osf.io/c46je  
-**Status:** Active — etapa8 (Weibull Survival Model) completed
+**Status:** ✅ COMPLETE — etapa13b (Multi-State Survival) is the final model  
+**Continuation:** [lulc-fm-brazil](https://github.com/barroso2501/lulc-fm-brazil) — GeoFM pre-training on all Brazilian biomes
 
 ---
 
@@ -341,6 +342,22 @@ with torch.no_grad():
 
 ---
 
+## Continuation — lulc-fm-brazil
+
+This repository is **complete**. The Cerrado Pilot demonstrated that MapBiomas LULC time series contain sufficient signal for ecological process prediction at the pixel level, with results validated prospectively (99.4% precision) and documented across 10 OSF pre-registration updates.
+
+The next phase of development is in a separate repository:
+
+**[lulc-fm-brazil](https://github.com/barroso2501/lulc-fm-brazil)** — a geospatial foundation model for land use and land cover dynamics in Brazil, pre-trained on 40 years of MapBiomas LULC time series across all 6 Brazilian biomes.
+
+The Cerrado Pilot contributes three things to that project:
+
+- **Proof of concept:** AUC=0.854 (P→S) and 99.4% prospective precision confirm that the signal exists and is learnable from LULC time series alone
+- **Downstream benchmark tasks:** P→S, P→N, P→P are the fine-tuning tasks that evaluate whether GeoFM representations transfer from continental pre-training to Cerrado-specific prediction
+- **Encoder baseline:** The etapa13b encoder (weight_PP=2.0, λ_S=25.9yr, λ_N=44.8yr) is the reference representation for fine-tuning evaluation
+
+---
+
 ## Future Directions
 
 **Enriching pre-T signal:** The main epistemic barrier is insufficient signal before T for CD* pixels and recent T values. External data (distance to active agricultural frontier, road infrastructure, land tenure, soy price history) could address this.
@@ -371,10 +388,6 @@ with torch.no_grad():
 
 MIT License — see [LICENSE](LICENSE) for details.  
 MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
-
----
-
-## License
 
 MIT License — see [LICENSE](LICENSE) for details.  
 MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
