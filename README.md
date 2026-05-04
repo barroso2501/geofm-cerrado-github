@@ -358,6 +358,29 @@ The Cerrado Pilot contributes three things to that project:
 
 ---
 
+
+## lulc-fm-brazil — GeoFM Foundation Model
+
+The [lulc-fm-brazil](https://github.com/barroso2501/lulc-fm-brazil) repository continues this project as a geospatial foundation model pre-trained on 40 years of MapBiomas LULC time series across all Brazilian biomes.
+
+### Phase 1 — Sampling (complete)
+- 80 cells of 2×2 degrees, stratified by biome
+- 4,067,807,469 pixels extracted across 6 biomes
+- 11 ecological processes decomposed by mechanism
+- 6 aggregated classes: N, P, A, U, W, T
+
+### Phase 2A — Pre-training (complete)
+- Architecture: Temporal Transformer (2 layers, 4 heads, dim=128)
+- Objective: masked temporal prediction (block masking, 5 years)
+- Result: val_loss=0.15, val_acc=0.95 — 2x better than MLP baseline
+- Training time: ~2 hours (6x faster than etapa13b due to RAM pipeline)
+
+### Phase 2B — Evaluation (partial)
+- Criterion 3 (latent space): Silhouette=0.528 ✅ STRONG (>0.40)
+- Criterion 1 (few-shot): 5/8 processes encoder > baseline ✅ MAJORITY
+- Criterion 4 (Cerrado Pilot): pending dedicated script
+- Criterion 2 (cross-biome): Phase 3
+
 ## Future Directions
 
 **Enriching pre-T signal:** The main epistemic barrier is insufficient signal before T for CD* pixels and recent T values. External data (distance to active agricultural frontier, road infrastructure, land tenure, soy price history) could address this.
@@ -386,6 +409,8 @@ The Cerrado Pilot contributes three things to that project:
 
 ## License
 
+MIT License — see [LICENSE](LICENSE) for details.  
+MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
 MIT License — see [LICENSE](LICENSE) for details.  
 MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
 
