@@ -385,6 +385,12 @@ The [lulc-fm-brazil](https://github.com/barroso2501/lulc-fm-brazil) repository c
 - Criterion 4 P→N: AUC=0.896 at 10% data (104.4% of etapa13b) ✅ **EXCEEDS**
 - Criterion 2 (cross-biome): Phase 3
 
+### Fine-tuning Weibull — GeoFM-FT (complete)
+
+- AUC P→S = **0.865** (+0.011 vs etapa13b) ✅ EXCEEDS
+- AUC P→N = **0.876** (+0.017 vs etapa13b) ✅ EXCEEDS
+- lam_S=24.16 yr | lam_N=43.64 yr (calibrated) | r=-0.806
+
 ## Future Directions
 
 **Enriching pre-T signal:** The main epistemic barrier is insufficient signal before T for CD* pixels and recent T values. External data (distance to active agricultural frontier, road infrastructure, land tenure, soy price history) could address this.
@@ -414,87 +420,6 @@ The [lulc-fm-brazil](https://github.com/barroso2501/lulc-fm-brazil) repository c
 ## License
 
 MIT License — see <LICENSE> for details.  
-MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
-**Spatial validation is essential.** Random pixel-level splits produced 72% geographic overlap between train and test, inflating apparent performance. Hexagon-stratified splits with 0% overlap are necessary for valid generalization claims.
-
-**The epistemic ceiling.** Error analysis identified pixels that neither model can predict: T=2010-2015 (short observation window before T), CD* pattern (individual mechanism without collective signal), and late conversions (T+4, T+5 years). These are genuine limits of what the available data can predict.
-
-**Attention does not help with homogeneous patches.** The 7×7 patch is predominantly pasture class 15 in most positions. Attention mechanisms collapse to uniform weights because there is insufficient spatial gradient to discriminate positions. Performance gains in v3/v3b come from per-frame encoding, not attention.
-
-**Weibull survival extends, not replaces, classification.** AUC is equivalent (0.846 vs 0.840 for baseline), but the survival model adds continuous-time prediction and incorporates censored data. The Weibull parameters (k, λ) are predictive artifacts, not direct ecological measurements.
-
----
-
-## Continuation — lulc-fm-brazil
-
-This repository is **complete**. The Cerrado Pilot demonstrated that MapBiomas LULC time series contain sufficient signal for ecological process prediction at the pixel level, with results validated prospectively (99.4% precision) and documented across 10 OSF pre-registration updates.
-
-The next phase of development is in a separate repository:
-
-**[lulc-fm-brazil](https://github.com/barroso2501/lulc-fm-brazil)** — a geospatial foundation model for land use and land cover dynamics in Brazil, pre-trained on 40 years of MapBiomas LULC time series across all 6 Brazilian biomes.
-
-The Cerrado Pilot contributes three things to that project:
-
-- **Proof of concept:** AUC=0.854 (P→S) and 99.4% prospective precision confirm that the signal exists and is learnable from LULC time series alone
-- **Downstream benchmark tasks:** P→S, P→N, P→P are the fine-tuning tasks that evaluate whether GeoFM representations transfer from continental pre-training to Cerrado-specific prediction
-- **Encoder baseline:** The etapa13b encoder (weight_PP=2.0, λ_S=25.9yr, λ_N=44.8yr) is the reference representation for fine-tuning evaluation
-
----
-
-
-## lulc-fm-brazil — GeoFM Foundation Model
-
-The [lulc-fm-brazil](https://github.com/barroso2501/lulc-fm-brazil) repository continues this project as a geospatial foundation model pre-trained on 40 years of MapBiomas LULC time series across all Brazilian biomes.
-
-### Phase 1 — Sampling (complete)
-- 80 cells of 2×2 degrees, stratified by biome
-- 4,067,807,469 pixels extracted across 6 biomes
-- 11 ecological processes decomposed by mechanism
-- 6 aggregated classes: N, P, A, U, W, T
-
-### Phase 2A — Pre-training (complete)
-- Architecture: Temporal Transformer (2 layers, 4 heads, dim=128)
-- Objective: masked temporal prediction (block masking, 5 years)
-- Result: val_loss=0.15, val_acc=0.95 — 2x better than MLP baseline
-- Training time: ~2 hours (6x faster than etapa13b due to RAM pipeline)
-
-### Phase 2B — Evaluation (partial)
-- Criterion 3 (latent space): Silhouette=0.528 ✅ STRONG (>0.40)
-- Criterion 1 (few-shot): 5/8 processes encoder > baseline ✅ MAJORITY
-- Criterion 4 (Cerrado Pilot): pending dedicated script
-- Criterion 2 (cross-biome): Phase 3
-
-## Future Directions
-
-**Enriching pre-T signal:** The main epistemic barrier is insufficient signal before T for CD* pixels and recent T values. External data (distance to active agricultural frontier, road infrastructure, land tenure, soy price history) could address this.
-
-**Survival model refinement:** A frailty model (random effects per pixel) would better handle unobserved heterogeneity. Per-group Weibull initialization based on classical survival analysis results could improve convergence.
-
-**Foundation model potential:** MapBiomas LULC time series cover all of Brazil (1985–2024) at 30m resolution with a consistent 30-class vocabulary. Self-supervised pre-training on continental-scale transition sequences could learn general land-use trajectory representations, transferable to other biomes and transition types.
-
----
-
-## Citation
-
-```bibtex
-@misc{barroso2026geofm,
-  author    = {Barroso Ramos Neto, Mario},
-  title     = {GeoFM: Predicting Pasture-to-Soy Conversion
-               in the Brazilian Cerrado},
-  year      = {2026},
-  publisher = {GitHub},
-  url       = {https://github.com/barroso2501/geofm-cerrado-github},
-  note      = {OSF pre-registration: https://osf.io/c46je}
-}
-```
-
----
-
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.  
-MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
-MIT License — see [LICENSE](LICENSE) for details.  
 MapBiomas Collection 10 data is subject to [MapBiomas terms of use](https://mapbiomas.org/en/terms-of-use) (CC-BY 4.0).
 
 MIT License — see [LICENSE](LICENSE) for details.  
